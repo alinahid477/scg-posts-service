@@ -1,0 +1,1 @@
+# scg-posts-service
