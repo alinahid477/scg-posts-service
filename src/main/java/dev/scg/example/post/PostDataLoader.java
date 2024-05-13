@@ -1,4 +1,4 @@
-package scg.example.post;
+package dev.scg.example.post;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

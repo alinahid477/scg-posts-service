@@ -1,4 +1,4 @@
-package scg.example.post;
+package dev.scg.example.post;
 
 import org.springframework.data.repository.ListCrudRepository;
 

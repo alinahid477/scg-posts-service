@@ -1,4 +1,4 @@
-package scg.example.post;
+package dev.scg.example.post;
 
 import jakarta.validation.Valid;
 import org.slf4j.Logger;

@@ -1,5 +1,21 @@
-package scg.example.post;
+package dev.scg.example.post;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -9,15 +25,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(PostController.class)
 @AutoConfigureMockMvc
@@ -74,15 +81,16 @@ class PostControllerTest {
     void shouldFindPostWhenGivenValidId() throws Exception {
         Post post = new Post(1,1,"Test Title", "Test Body",null);
         when(repository.findById(1)).thenReturn(Optional.of(post));
-        String json = STR."""
-                {
-                    "id":\{post.id()},
-                    "userId":\{post.userId()},
-                    "title":"\{post.title()}",
-                    "body":"\{post.body()}",
-                    "version": null
-                }
-                """;
+        JSONObject obj = new JSONObject();
+        obj.put("id", post.id());
+        obj.put("userId", post.userId());
+        obj.put("title", post.title());
+        obj.put("body", post.body());
+        obj.put("version", null);
+
+        String json = obj.toString();
+
+        System.out.println(json);
 
         mockMvc.perform(get("/api/posts/1"))
                 .andExpect(status().isOk())
@@ -93,15 +101,17 @@ class PostControllerTest {
     void shouldCreateNewPostWhenGivenValidID() throws Exception {
         Post post = new Post(3,1,"This is my brand new post", "TEST BODY",null);
         when(repository.save(post)).thenReturn(post);
-        String json = STR."""
-                {
-                    "id":\{post.id()},
-                    "userId":\{post.userId()},
-                    "title":"\{post.title()}",
-                    "body":"\{post.body()}",
-                    "version": null
-                }
-                """;
+        JSONObject obj = new JSONObject();
+        obj.put("id", post.id());
+        obj.put("userId", post.userId());
+        obj.put("title", post.title());
+        obj.put("body", post.body());
+        obj.put("version", null);
+
+        String json = obj.toString();
+
+        System.out.println(json);
+        
 
         mockMvc.perform(post("/api/posts")
                 .contentType("application/json")
@@ -115,15 +125,17 @@ class PostControllerTest {
         Post updated = new Post(1,1,"This is my brand new post", "UPDATED BODY",1);
         when(repository.findById(1)).thenReturn(Optional.of(posts.get(0)));
         when(repository.save(updated)).thenReturn(updated);
-        String requestBody = STR."""
-                {
-                    "id":\{updated.id()},
-                    "userId":\{updated.userId()},
-                    "title":"\{updated.title()}",
-                    "body":"\{updated.body()}",
-                    "version": \{updated.version()}
-                }
-                """;
+        JSONObject obj = new JSONObject();
+        obj.put("id", updated.id());
+        obj.put("userId", updated.userId());
+        obj.put("title", updated.title());
+        obj.put("body", updated.body());
+        obj.put("version", null);
+
+        String requestBody = obj.toString();
+
+        System.out.println(requestBody);
+        
 
         mockMvc.perform(put("/api/posts/1")
                 .contentType("application/json")
@@ -135,15 +147,16 @@ class PostControllerTest {
     void shouldNotUpdateAndThrowNotFoundWhenGivenAnInvalidPostID() throws Exception {
         Post updated = new Post(50,1,"This is my brand new post", "UPDATED BODY",1);
         when(repository.save(updated)).thenReturn(updated);
-        String json = STR."""
-                {
-                    "id":\{updated.id()},
-                    "userId":\{updated.userId()},
-                    "title":"\{updated.title()}",
-                    "body":"\{updated.body()}",
-                    "version": \{updated.version()}
-                }
-                """;
+        JSONObject obj = new JSONObject();
+        obj.put("id", updated.id());
+        obj.put("userId", updated.userId());
+        obj.put("title", updated.title());
+        obj.put("body", updated.body());
+        obj.put("version", null);
+
+        String json = obj.toString();
+
+        System.out.println(json);
 
         mockMvc.perform(put("/api/posts/999")
                         .contentType("application/json")
