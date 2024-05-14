@@ -5,6 +5,8 @@ spring:
     init:
       mode: always
 eureka:
+  instance:
+    hostName: ${spring.application.name}
   client:
     registerWithEureka: true
     serviceUrl: 
