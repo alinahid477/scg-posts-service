@@ -6,7 +6,7 @@ spring:
       mode: always
 eureka:
   instance:
-    hostName: ${spring.application.name}
+    hostName: ${spring.application.name}.scg.anahidapps.xyz
   client:
     registerWithEureka: true
     serviceUrl: 
